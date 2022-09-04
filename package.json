@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "build": "webpack -p",
+    "build": "webpack",
     "watch": "webpack --watch",
     "lint": "eslint ./**/main.js"
   },
@@ -12,18 +12,18 @@
   "license": "ISC",
   "dependencies": {
     "file-loader": "^4.2.0",
-    "webpack": "^4.41.2"
+    "webpack": "^5.74.0"
   },
   "devDependencies": {
-    "css-loader": "^3.2.0",
+    "css-loader": "^6.7.1",
     "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "extract-text-webpack-plugin": "^4.0.0-beta.0",
-    "node-sass": "^4.13.0",
-    "sass-loader": "^8.0.0",
-    "style-loader": "^1.0.0",
+    "mini-css-extract-plugin": "^2.6.1",
+    "node-sass": "^7.0.1",
+    "sass-loader": "^13.0.2",
+    "style-loader": "^3.3.1",
     "url-loader": "^3.0.0",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^4.10.0"
   }
 }

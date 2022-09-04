@@ -1,17 +1,57 @@
-import ajax from './ajax';
+import NetworkRequests from './networkRequests';
+import Weather from './weather';
+import Map from './map';
+import ControlBtns from './controlBtns';
 
-const bg = document.querySelector('.wrapper');
-const location = ajax.getLocation();
-const weather = ajax.getWeather(location.city, location.country, 'en', 'metric');
+export default class Main {
+  constructor() {
+    this.networkRequests = new NetworkRequests();
+    this.location = null;
+    this.weather = null;
+    this.background = null;
+    this.newLocation = null;
+  }
 
-function resetBackground(loc = location) {
-  bg.style.backgroundImage = `url('${ajax.getBackground(loc.city).urls.regular}')`;
+  setMapModule() {
+    const map = new Map(this.location);
+    map.setMap();
+    return map.map;
+  }
+
+  setControlBtnsModule(map) {
+    const controlBtns = new ControlBtns(this.location, map, this.networkRequests);
+    controlBtns.initBtnsEvent();
+    controlBtns.resetBackground(this.location);
+  }
+
+  setWeatherModule() {
+    const weather = new Weather(this.weather);
+    weather.initWeather();
+  }
+
+  init() {
+    const loadLocation = new Promise((resolve) => {
+      resolve(this.networkRequests.getLocation());
+    });
+
+    loadLocation.then(
+      (location) => {
+        this.location = location;
+        const loadWeather = new Promise((resolve) => {
+          resolve(this.networkRequests.getWeather(this.location.city, this.location.country, 'en', 'metric'));
+        });
+
+        loadWeather.then(
+          (weather) => {
+            this.weather = weather;
+            this.setWeatherModule();
+          },
+        );
+        const map = this.setMapModule();
+        this.setControlBtnsModule(map);
+      },
+    );
+  }
 }
 
-resetBackground(location);
-
-export {
-  location,
-  resetBackground,
-  weather,
-};
+new Main().init();

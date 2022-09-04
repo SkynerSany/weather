@@ -11,4 +11,10 @@ module.exports = {
     rules: {
       "linebreak-style": 0
     },
+    globals: {
+      window: true,
+      document: true,
+      localStorage: true,
+      getComputedStyle: true,
+    },
   };
