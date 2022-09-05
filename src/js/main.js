@@ -15,7 +15,7 @@ export default class Main {
   setMapModule() {
     const map = new Map(this.location);
     map.setMap();
-    return map.map;
+    return map;
   }
 
   setControlBtnsModule(map) {
@@ -30,6 +30,8 @@ export default class Main {
   }
 
   init() {
+    document.querySelector('.wrapper').style.backgroundImage = `url(src/assets/images/defaultImage.jpg)`;
+
     const loadLocation = new Promise((resolve) => {
       resolve(this.networkRequests.getLocation());
     });

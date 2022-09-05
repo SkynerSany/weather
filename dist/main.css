@@ -5,7 +5,8 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Roboto; }
+  font-family: Roboto;
+  text-shadow: 0 0 2px black; }
 
 .header {
   height: 4vw;
@@ -13,25 +14,25 @@
   flex-direction: column;
   justify-content: center;
   color: #ffffff;
-  background-color: rgba(0, 0, 0, 0.5); }
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 20px #ffffff; }
 
 .header-cloud {
   box-shadow: 12px 29px 81px 0px black; }
 
 .wrapper {
-  height: 50vw;
-  background-size: cover; }
+  height: 50.45vw;
+  background-size: cover;
+  transition: 1s linear; }
 
 .control {
   display: flex;
   justify-content: space-evenly;
   align-items: center; }
 
-.control__task {
-  cursor: pointer; }
-
-.control__background {
-  cursor: pointer; }
+.cloud {
+  overflow: hidden;
+  position: relative; }
 
 .btn_top {
   width: 4vw;
@@ -43,14 +44,16 @@
   border-radius: 1vw;
   text-align: center;
   font-size: 1vw;
-  transition: 0.3s linear; }
+  transition: width 0.3s linear;
+  cursor: pointer; }
+  .btn_top:hover {
+    box-shadow: inset 0 0 13px 0px white; }
+
+.constrol__animationCloudBtn {
+  width: 8vw; }
 
 .control__languages {
-  position: relative;
-  cursor: pointer; }
-
-.control__unit {
-  cursor: pointer; }
+  position: relative; }
 
 .table {
   display: none;
@@ -71,7 +74,7 @@
 
 .control__search__form__input {
   position: relative;
-  width: 16.3vw;
+  width: 2.7vw;
   height: 2.7vw;
   padding-left: 1vw;
   font-size: 1vw;
@@ -81,14 +84,12 @@
   outline: none;
   color: #ffffff;
   transition: 0.3s linear; }
-  .control__search__form__input:focus {
-    width: 300px; }
   .control__search__form__input::-webkit-input-placeholder {
     color: #ffffff; }
 
 .control__search__form__btn {
-  width: 2.8vw;
-  height: 2.8vw;
+  width: 2.7vw;
+  height: 2.7vw;
   background: none;
   border: none;
   position: absolute;
@@ -97,23 +98,15 @@
   .control__search__form__btn:before {
     content: "\f002";
     font-family: FontAwesome;
+    font-size: 1.2vw;
     color: #ffffff;
     cursor: pointer; }
   .control__search__form__btn:focus {
     outline: none; }
 
-.cloud {
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%;
-  height: 0;
-  background: url(26a2fc383c6c374a6de8.jpg) !important;
-  background-color: #00b7ff;
-  background-size: cover; }
-
 .clouds {
   width: 100%;
+  height: 49vw;
   left: 0;
   top: 0;
   position: absolute;
@@ -190,7 +183,9 @@
   width: 40vw;
   background-color: rgba(0, 0, 0, 0.5);
   margin-right: 2vw;
-  border-radius: 3vw; }
+  border-radius: 3vw;
+  box-shadow: 0 0 20px #ffffff;
+  color: #ffffff; }
 
 .info__days {
   position: relative;
@@ -200,10 +195,8 @@
   display: flex;
   background-color: rgba(0, 0, 0, 0.5);
   margin-right: 2vw;
-  border-radius: 3vw; }
-
-.info__now {
-  color: #ffffff; }
+  border-radius: 3vw;
+  box-shadow: 0 0 20px #ffffff; }
 
 .info__now__block {
   display: flex;
@@ -233,14 +226,16 @@
   margin-top: -1.6vw; }
 
 .info__now__weather__about {
-  display: flex;
-  margin-top: 4vw;
+  margin-top: 1vw;
   font-size: 2vw;
+  display: flex;
+  flex-direction: column;
   line-height: 3vw; }
   .info__now__weather__about li {
-    display: block;
-    flex: 1;
-    text-align: center; }
+    margin: 0.2vw 2.5vw;
+    display: flex;
+    text-align: center;
+    justify-content: space-between; }
 
 .info__days__block {
   margin-top: 1vw;
@@ -272,5 +267,6 @@
   height: 40vw;
   width: 40vw;
   background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 3vw; }
+  border-radius: 3vw;
+  box-shadow: 0 0 20px #ffffff; }
 

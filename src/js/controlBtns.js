@@ -5,18 +5,9 @@ export default class ControlBtns {
     this.location = location;
     this.networkRequests = networkRequests;
     this.weather = new Weather();
-    this.unit = 'mitric';
+    this.unit = 'metric';
     this.lang = 'en';
-    this.newLocation = {
-      results: {
-        0: {
-          components: {
-            state: this.location.city,
-            country: this.location.country,
-          },
-        },
-      },
-    };
+    this.newLocation = { city: this.location.city, country_code: this.location.country };
     this.map = map;
   }
 
@@ -35,8 +26,12 @@ export default class ControlBtns {
 
   newWeather() {
     const loadWeather = new Promise((resolve) => {
-      resolve(this.networkRequests.getWeather(this.newLocation.results[0].components.state,
-        this.newLocation.results[0].components.country, this.lang, this.unit));
+      resolve(this.networkRequests.getWeather(
+        this.newLocation.city,
+        this.newLocation.country_code,
+        this.lang,
+        this.unit,
+      ));
     });
     loadWeather.then((weather) => {
       this.weather.resetWeather(weather);
@@ -45,68 +40,93 @@ export default class ControlBtns {
 
   resetBackground(loc = this.location) {
     const bg = new Promise((resolve) => resolve(this.networkRequests.getBackground(loc.city)));
-    bg.then((result) => {
-      document.querySelector('.wrapper').style.backgroundImage = `url('${result.urls.regular}')`;
-    });
+    bg.then(
+      (result) => {
+        const img = document.createElement('img');
+        img.src = result.urls.regular;
+        img.onload = () => {
+          document.querySelector('.wrapper').style.backgroundImage = `url(${result.urls.regular})`;
+        };
+      },
+      () => {
+        document.querySelector('.wrapper').style.backgroundImage = 'url(src/assets/images/defaultImage.jpg)';
+      },
+    );
   }
 
-  initBtnsEvent() {
-    const controlBtns = document.querySelectorAll('.btn_top');
-    const btnSearch = document.querySelector('.control__search__form__btn');
+  searchLocation() {
     const inputSearch = document.querySelector('.control__search__form__input');
-    const liText = document.querySelectorAll('.table');
+    if (inputSearch.value.length < 1) return;
+
+    const loadLocation = new Promise((resolve) => resolve(this.networkRequests.getNewLocation(inputSearch.value)));
+
+    loadLocation.then((newLocation) => {
+      this.map.resetPosition(newLocation.results[0].geometry);
+      this.newLocation.city = newLocation.results[0].components.city;
+      this.newLocation.country_code = newLocation.results[0].components.country_code;
+      this.resetBackground(this.newLocation.city);
+      this.newWeather();
+    });
+
+    inputSearch.blur();
+    inputSearch.style.width = '2.7vw';
+    inputSearch.value = '';
+  }
+
+  addClouds(btnAddClouds) {
     const wrapper = document.querySelector('.wrapper');
+
+    if (wrapper.classList.contains('cloud')) {
+      btnAddClouds.textContent = 'Add Clouds';
+      for (let i = 1; i < 5; i += 1) {
+        wrapper.removeChild(document.querySelector(`.cloud${i}.clouds`));
+      }
+    } else {
+      btnAddClouds.textContent = 'Remove Clouds';
+      for (let i = 1; i < 5; i += 1) {
+        const img = document.createElement('img');
+        img.src = `src/assets/images/cloud-0${i}.png`;
+        img.className = `cloud${i} clouds`;
+        wrapper.appendChild(img);
+      }
+    }
+
+    wrapper.classList.toggle('cloud');
+  }
+
+  setCurrentValue(btnSwitchLanguage, btnSwitchUnit) {
     const switchUnit = {
       '°С': 'metric',
       '°F': 'imperial',
     };
 
-    liText.forEach((el) => {
+    document.querySelectorAll('.table').forEach((el) => {
       el.addEventListener('click', (event) => {
         const { target } = event;
         target.parentNode.parentNode.firstElementChild.textContent = target.textContent;
-        this.unit = switchUnit[controlBtns[3].firstElementChild.textContent];
-        this.lang = controlBtns[2].firstElementChild.textContent;
+        this.unit = switchUnit[btnSwitchUnit.firstElementChild.textContent];
+        this.lang = btnSwitchLanguage.firstElementChild.textContent;
         this.newWeather();
       });
     });
+  }
 
-    controlBtns.forEach((el, i) => {
-      if (i > 1 && i < 4) {
-        el.addEventListener('click', () => {
-          this.dropDown(controlBtns[i].lastElementChild);
-        });
-      }
-    });
+  initBtnsEvent() {
+    const btnAddClouds = document.querySelector('.constrol__animationCloudBtn');
+    const btnSwitchLanguage = document.querySelector('.control__languages');
+    const btnSwitchUnit = document.querySelector('.control__unit');
+    const inputSearchForm = document.querySelector('.control__search__form');
+    const inputSearch = document.querySelector('.control__search__form__input');
 
-    controlBtns[1].addEventListener('click', () => {
-      this.resetBackground(this.newLocation);
-    });
+    this.setCurrentValue(btnSwitchLanguage, btnSwitchUnit);
 
-    controlBtns[0].addEventListener('click', () => {
-      if (controlBtns[0].textContent === 'Cloud') {
-        controlBtns[0].textContent = 'Task';
-        wrapper.className += ' cloud';
-        for (let i = 1; i < 5; i += 1) {
-          const img = document.createElement('img');
-          img.src = `src/assets/images/cloud-0${i}.png`;
-          img.className = `cloud${i} clouds`;
-          wrapper.appendChild(img);
-        }
-      } else {
-        wrapper.className = wrapper.className.replace(' cloud', '');
-        controlBtns[0].textContent = 'Cloud';
-        for (let i = 1; i < 5; i += 1) {
-          wrapper.removeChild(document.querySelector(`.cloud${i}.clouds`));
-        }
-      }
-    });
-
-    btnSearch.addEventListener('click', () => {
-      this.newLocation = this.networkRequests.getNewLocation(inputSearch.value);
-      this.resetBackground(this.newLocation);
-      this.map(this.newLocation.results[0].geometry);
-      this.newWeather();
-    });
+    btnSwitchLanguage.addEventListener('click', () => this.dropDown(btnSwitchLanguage.lastElementChild));
+    btnSwitchUnit.addEventListener('click', () => this.dropDown(btnSwitchUnit.lastElementChild));
+    document.querySelector('.control__background').addEventListener('click', () => this.resetBackground(this.newLocation.city));
+    btnAddClouds.addEventListener('click', () => this.addClouds(btnAddClouds));
+    inputSearchForm.addEventListener('click', () => { inputSearch.style.width = '15vw'; inputSearch.focus(); });
+    inputSearch.addEventListener('blur', () => { inputSearch.style.width = '2.7vw'; });
+    inputSearch.addEventListener('keydown', (e) => { if (e.keyCode === 13) this.searchLocation(); });
+    document.querySelector('.control__search__form__btn').addEventListener('click', () => this.searchLocation());
   }
 }

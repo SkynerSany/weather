@@ -1,6 +1,6 @@
 const body = document.querySelector('.body');
 
-const words = ['Cloud', 'EN', 'EN', 'RU', 'BE', '°С', '°С', '°F'];
+const words = ['Add Clouds', 'EN', 'EN', 'RU', 'BE', '°С', '°С', '°F'];
 const numberOfDomWords = [3, 7, 9, 10, 11, 13, 15, 16];
 
 const tag = ['div', 'header', 'div', 'div', 'div', 'i', 'div', 'span', 'ul', 'li', 'li', 'li',
@@ -9,7 +9,7 @@ const tag = ['div', 'header', 'div', 'div', 'div', 'i', 'div', 'span', 'ul', 'li
   'p', 'p', 'li', 'p', 'p', 'li', 'p', 'p', 'div', 'div', 'span', 'div', 'span', 'img', 'div', 'span',
   'div', 'span', 'img', 'div', 'span', 'div', 'span', 'img', 'div', 'div'];
 
-const classes = ['wrapper', 'header', 'control', 'control__task btn_top', 'control__background btn_top',
+const classes = ['wrapper', 'header', 'control', 'constrol__animationCloudBtn btn_top', 'control__background btn_top',
   'fa fa-undo fa-1x', 'control__languages btn_top', 'control__languages__select', 'control__languages__ul table',
   'control__languages__ul__li row', 'control__languages__ul__li row', 'control__languages__ul__li row', 'control__unit btn_top',
   'control__unit__select', 'control__unit__ul table', 'control__unit__ul__li row', 'control__unit__ul__li row',

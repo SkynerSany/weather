@@ -3,6 +3,7 @@
   margin: 0;
   padding: 0;
   font-family: Roboto;
+  text-shadow: 0 0 2px black;
 }
 
 .header {
@@ -12,6 +13,7 @@
   justify-content: center;
   color: #ffffff;
   background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 20px #ffffff;
 }
 
 .header-cloud {
@@ -19,8 +21,9 @@
 }
 
 .wrapper {
-  height: 50vw;
+  height: 50.45vw;
   background-size: cover;
+  transition: 1s linear;
 }
 
 .control {
@@ -29,12 +32,9 @@
   align-items: center;
 }
 
-.control__task {
-  cursor: pointer;
-}
-
-.control__background {
-  cursor: pointer;
+.cloud {
+  overflow: hidden;
+  position: relative;
 }
 
 .btn_top {
@@ -47,16 +47,19 @@
   border-radius: 1vw;
   text-align: center;
   font-size: 1vw;
-  transition: 0.3s linear;
+  transition: width 0.3s linear;
+  cursor: pointer;
+  &:hover {
+    box-shadow: inset 0 0 13px 0px white;
+  }
+}
+
+.constrol__animationCloudBtn {
+  width: 8vw;
 }
 
 .control__languages {
   position: relative;
-  cursor: pointer;
-}
-
-.control__unit {
-  cursor: pointer;
 }
 
 .table { 
@@ -81,7 +84,7 @@
 
 .control__search__form__input {
   position: relative;
-  width: 16.3vw;
+  width: 2.7vw;
   height: 2.7vw;
   padding-left: 1vw;
   font-size: 1vw;
@@ -91,17 +94,14 @@
   outline: none;
   color: #ffffff;
   transition: 0.3s linear;
-  &:focus {
-    width: 300px;
-  }
   &::-webkit-input-placeholder {
     color: #ffffff;
   }  
 }
 
 .control__search__form__btn {
-  width: 2.8vw;
-  height: 2.8vw;
+  width: 2.7vw;
+  height: 2.7vw;
   background: none;
   border: none;
   position: absolute;
@@ -110,6 +110,7 @@
   &:before{
     content: "\f002";
     font-family: FontAwesome;
+    font-size: 1.2vw;
     color: #ffffff;
     cursor: pointer;
   }
@@ -118,19 +119,9 @@
   }
 }
 
-.cloud {
-  overflow: hidden;
-  position: relative;
-  width:100%;
-  padding-bottom: 56.25%;
-  height: 0;
-  background: url(../assets/images/bg-night.jpg) !important;
-  background-color: #00b7ff;;
-  background-size: cover;
-}
-
 .clouds {
   width: 100%;
+  height: 49vw;
   left: 0;
   top: 0;
   position: absolute;
@@ -227,6 +218,8 @@
   background-color: rgba(0,0,0,0.5);
   margin-right: 2vw;
   border-radius: 3vw;
+  box-shadow: 0 0 20px #ffffff;
+  color: #ffffff;
 }
 
 .info__days {
@@ -238,10 +231,7 @@
   background-color: rgba(0,0,0,0.5);
   margin-right: 2vw;
   border-radius: 3vw;
-}
-
-.info__now {
-  color: #ffffff;
+  box-shadow: 0 0 20px #ffffff;
 }
 
 .info__now__block {
@@ -279,14 +269,16 @@
 }
 
 .info__now__weather__about {
-  display: flex;
-  margin-top: 4vw;
+  margin-top: 1vw;
   font-size: 2vw;
+  display: flex;
+  flex-direction: column;
   line-height: 3vw;
   li {
-    display: block;
-    flex: 1;
+    margin: 0.2vw 2.5vw;
+    display: flex;
     text-align: center;
+    justify-content: space-between;
   }
 }
 
@@ -326,4 +318,5 @@
   width: 40vw;
   background-color: rgba(0,0,0,0.5);
   border-radius: 3vw;
+  box-shadow: 0 0 20px #ffffff;
 }
