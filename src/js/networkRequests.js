@@ -10,7 +10,7 @@ export default class NetworkRequests {
   }
 
   getWeather(location, state, language, temperature) {
-    return this.request(`https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/forecast?q=${location},${state}&lang=${language}&units=${temperature}&APPID=6ebdd0fd3d344c146430ede697227fdf`);
+    return this.request(`https://api.openweathermap.org/data/2.5/forecast?q=${location},${state}&lang=${language}&units=${temperature}&APPID=6ebdd0fd3d344c146430ede697227fdf`);
   }
 
   getBackground(town) {
