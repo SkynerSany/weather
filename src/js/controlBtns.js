@@ -34,6 +34,10 @@ export default class ControlBtns {
       ));
     });
     loadWeather.then((weather) => {
+      if (weather.cod === '404') {
+        alert('Weather on this location not found');
+        return;
+      }
       this.weather.resetWeather(weather);
     });
   }
@@ -87,6 +91,7 @@ export default class ControlBtns {
         const img = document.createElement('img');
         img.src = `src/assets/images/cloud-0${i}.png`;
         img.className = `cloud${i} clouds`;
+
         wrapper.appendChild(img);
       }
     }
@@ -115,18 +120,18 @@ export default class ControlBtns {
     const btnAddClouds = document.querySelector('.constrol__animationCloudBtn');
     const btnSwitchLanguage = document.querySelector('.control__languages');
     const btnSwitchUnit = document.querySelector('.control__unit');
-    const inputSearchForm = document.querySelector('.control__search__form');
     const inputSearch = document.querySelector('.control__search__form__input');
 
     this.setCurrentValue(btnSwitchLanguage, btnSwitchUnit);
 
     btnSwitchLanguage.addEventListener('click', () => this.dropDown(btnSwitchLanguage.lastElementChild));
     btnSwitchUnit.addEventListener('click', () => this.dropDown(btnSwitchUnit.lastElementChild));
-    document.querySelector('.control__background').addEventListener('click', () => this.resetBackground(this.newLocation.city));
     btnAddClouds.addEventListener('click', () => this.addClouds(btnAddClouds));
-    inputSearchForm.addEventListener('click', () => { inputSearch.style.width = '15vw'; inputSearch.focus(); });
     inputSearch.addEventListener('blur', () => { inputSearch.style.width = '2.7vw'; });
     inputSearch.addEventListener('keydown', (e) => { if (e.keyCode === 13) this.searchLocation(); });
+
+    document.querySelector('.control__background').addEventListener('click', () => this.resetBackground(this.newLocation.city));
     document.querySelector('.control__search__form__btn').addEventListener('click', () => this.searchLocation());
+    document.querySelector('.control__search__form').addEventListener('click', () => { inputSearch.style.width = '15vw'; inputSearch.focus(); });
   }
 }

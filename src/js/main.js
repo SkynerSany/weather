@@ -6,6 +6,7 @@ import ControlBtns from './controlBtns';
 export default class Main {
   constructor() {
     this.networkRequests = new NetworkRequests();
+    this.defaultLocation = { city: 'Minsk', country: 'BY', loc: '53.9024716,27.5618225' };
     this.location = null;
     this.weather = null;
     this.background = null;
@@ -29,8 +30,33 @@ export default class Main {
     weather.initWeather();
   }
 
+  setStartLocatiton(location) {
+    this.location = location;
+    const loadWeather = new Promise((resolve) => {
+      resolve(this.networkRequests.getWeather(
+        this.location.city || 'Minsk',
+        this.location.country || 'BY',
+        'en',
+        'metric',
+      ));
+    });
+
+    loadWeather.then(
+      (weather) => {
+        if (weather.cod === '404') {
+          this.setStartLocatiton(this.defaultLocation);
+          return;
+        }
+        this.weather = weather;
+        this.setWeatherModule();
+        const map = this.setMapModule();
+        this.setControlBtnsModule(map);
+      },
+    );
+  }
+
   init() {
-    document.querySelector('.wrapper').style.backgroundImage = `url(src/assets/images/defaultImage.jpg)`;
+    document.querySelector('.wrapper').style.backgroundImage = 'url(src/assets/images/defaultImage.jpg)';
 
     const loadLocation = new Promise((resolve) => {
       resolve(this.networkRequests.getLocation());
@@ -38,19 +64,7 @@ export default class Main {
 
     loadLocation.then(
       (location) => {
-        this.location = location;
-        const loadWeather = new Promise((resolve) => {
-          resolve(this.networkRequests.getWeather(this.location.city, this.location.country, 'en', 'metric'));
-        });
-
-        loadWeather.then(
-          (weather) => {
-            this.weather = weather;
-            this.setWeatherModule();
-          },
-        );
-        const map = this.setMapModule();
-        this.setControlBtnsModule(map);
+        this.setStartLocatiton(location);
       },
     );
   }
